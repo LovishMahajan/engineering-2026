@@ -1,0 +1,41 @@
+ADR	Architecture Decision Record — a decision + its context + alternatives considered, stored in-repo. The staff-track written artifact.
+A2A	Agent-to-agent interop protocol (emerging 2026) — cross-vendor agent communication; MCP's sibling for agent↔agent instead of agent↔tools.
+ANR	Android "App Not Responding" — the silent mobile killer metric; main thread blocked too long. Tracked alongside crash-free sessions.
+Backpressure	Consumer-paced flow control — the consumer signals the producer to slow down (streams). Ignoring it means unbounded memory growth.
+Bridgeless / JSI	React Native New Architecture's synchronous JS↔native interface, replacing the old async bridge. Enables Fabric + TurboModules.
+Burn rate	How fast an error budget is being spent — THE alerting signal (multi-window multi-burn beats static thresholds).
+Cache stampede / penetration / avalanche	Three cache failure modes: many misses hitting DB at once (stampede — fix: per-key mutex); queries for keys that never exist (penetration — fix: negative caching); synchronized mass expiry (avalanche — fix: TTL jitter).
+CDC	Change Data Capture — reading the DB's WAL and turning changes into events (Debezium → Kafka). Beats dual-writes for data replication.
+CNG	Continuous Native Generation — Expo's declarative native projects: no ios/android dirs committed; `expo prebuild` generates them from config.
+CQRS	Command Query Responsibility Segregation — separate the write model from read projections (e.g., Kafka feeding Elasticsearch read views).
+CRD / Operator	Kubernetes Custom Resource Definition + a reconciling controller — "the reconciliation loop for your domain."
+Dogpile protection	A per-key mutex (or probabilistic early refresh) on cache miss so only ONE caller recomputes while others wait.
+DLQ	Dead-Letter Queue — where poison messages land after retry exhaustion. Incomplete without its documented replay runbook.
+Error budget	1 − SLO. Spent by incidents; governs release pace. When spent, the negotiated policy kicks in (e.g., feature freeze).
+Exactly-once (honesty)	In practice = at-least-once delivery + idempotent consumers. True end-to-end exactly-once across arbitrary systems doesn't exist.
+Expand / contract	Zero-downtime change choreography: add the new (expand) → dual-write/backfill → remove the old (contract). DB schemas, APIs, mobile API windows.
+Golden path	The paved-road template that is EASIER than going around it — never mandatory-by-decree. Platform engineering's core artifact.
+HNSW	Hierarchical Navigable Small World — the dominant vector-index structure. The triangle: recall vs speed vs memory.
+Idempotency key	A client-supplied dedupe token for unsafe operations — server stores key→response and replays on retry. Mandatory for anything payment-shaped.
+INP	Interaction to Next Paint — the web responsiveness Core Web Vital (replaced FID). North-star metric for React interaction performance.
+IRSA / workload identity	Pods assuming cloud IAM roles without stored secrets — how k8s workloads get AWS permissions. Access keys are legacy.
+KV cache	The LLM-serving structure that makes identical prompt PREFIXES cheap to re-read — the mechanical basis of prompt caching.
+Lethal trifecta	An agent with (private data access + untrusted content exposure + exfiltration channel) is exploitable — remove or gate at least one leg.
+Lost in the middle	Long-context recall degrades with position and length — why huge context windows are NOT a retrieval strategy; RAG still matters.
+LTS	Long-Term Support release line — the only versions production runs. Read every LTS changelog as upgrade duty.
+MASVS	OWASP Mobile Application Security Verification Standard — the mobile audit checklist (sibling of ASVS).
+MCP	Model Context Protocol — the "USB-C of AI tools": servers expose tools/resources/prompts; hosts connect over stdio/HTTP.
+MVCC	Multi-Version Concurrency Control — readers don't block writers (Postgres). Its cost: dead row versions → VACUUM exists.
+N+1	One query per row — the ORM's favorite bug. Fixes: DataLoader (GraphQL), selectinload (SQLAlchemy), eager loading + EXPLAIN discipline.
+Outbox	Transactional outbox — write the business row AND an outbox row in ONE transaction; a relay publishes to the broker. The dual-write cure.
+PITR	Point-In-Time Recovery — a backup is only real once you've actually restored it. Drill it; measure RTO.
+PKCE	Proof Key for Code Exchange — the OAuth code-exchange proof for public clients (mobile/SPA). System browser, never a webview.
+PPR	Partial Prerendering (Next.js) — static/cached shell + streamed dynamic holes per route. Compose static and dynamic, don't choose per URL.
+RED / USE	RED = Rate, Errors, Duration (per service). USE = Utilization, Saturation, Errors (per resource). The two dashboard methods.
+RLS	Row-Level Security — tenant isolation enforced in the database itself, not just app code.
+RSC	React Server Components — the two-module-graph model: server components never ship to the client; 'use client' marks a boundary, not a component.
+Saga	A distributed transaction via compensating actions — choreographed (events) or orchestrated (a coordinator). Design the failure paths FIRST.
+SLI / SLO	Service Level Indicator (the measured signal) / Service Level Objective (the target on it). Error budgets fall out of them.
+SLSA / SBOM	Supply-chain provenance maturity levels / the Software Bill of Materials. 2026 compliance table stakes; generated in CI.
+Tail sampling	Trace-sampling decision made AFTER the trace completes — keep the interesting traces, drop the boring. Lives in the OTel Collector.
+TTI / TTFT	Time To Interactive (mobile cold start — the metric users feel most) / Time To First Token (LLM streaming — perceived latency).
